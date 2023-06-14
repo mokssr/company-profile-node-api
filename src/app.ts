@@ -1,9 +1,11 @@
 import express from "express";
-import { router as apiRouter } from "./routes/indexRoutes.js";
+import indexRouter from "./routes/indexRoutes";
 
 const app = express();
 
-app.use("/api", apiRouter);
+app.use(express.json());
+
+app.use("/api", indexRouter);
 
 app.get("/", async (req, res) => {
   res.send("hello world");
