@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
 import { APIResponse } from "../utils/ResponseFormatter";
-import { findAllPosts } from "../services/postService";
+import PostService from "../services/postService";
 
-const getAllPost = (req: Request, res: Response) => {
-  const post = findAllPosts(0, 5);
-
+const getAllPost = async (req: Request, res: Response) => {
+  const post = await PostService.getAllPost();
   res.send(APIResponse(null, post));
 };
 
