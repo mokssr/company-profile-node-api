@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { APIResponse } from "../utils/ResponseFormatter.js";
+import BadRequest from "./BadRequest.js";
 
 const GlobalErrorHandler = (
   err: Error,
@@ -7,10 +8,17 @@ const GlobalErrorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  let errMessage = "Unexpected error happened. Please try again later";
-  console.error(err.stack);
+  if (err instanceof BadRequest) {
+    return res
+      .status(err.status ?? 400)
+      .send(APIResponse(err.message, null, false));
+  }
 
-  return res.status(500).send(APIResponse(errMessage, null, false));
+  console.error(err);
+  let defaultErrorMessage = "Unexpected error happened. Please try again later";
+  return res
+    .status(500)
+    .send(APIResponse(err.message ?? defaultErrorMessage, null, false));
 };
 
 export default GlobalErrorHandler;

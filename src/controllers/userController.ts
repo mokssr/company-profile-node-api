@@ -1,9 +1,10 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import UserService from "../services/userService";
 import { validateSignUp } from "../validations/userValidation";
 import { APIResponse } from "../utils/ResponseFormatter";
+import BadRequest from "../exceptions/BadRequest";
 
-const addUser = async (req: Request, res: Response) => {
+const addUser = (req: Request, res: Response, next: NextFunction) => {
   let { error: valError, value } = validateSignUp(req.body);
 
   if (valError) {
@@ -13,19 +14,30 @@ const addUser = async (req: Request, res: Response) => {
     return;
   }
 
-  let { error, value: userResult } = await UserService.addUser(value);
+  UserService.addUser(value)
+    .then((value) => {
+      res.status(201).send(APIResponse("user created", value));
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
 
-  if (error) {
-    console.error(error);
-    res.status(400).send(APIResponse(error, userResult, false));
-    return;
+const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const take = parseInt((req.query.take as string) ?? "10");
+    const skip = parseInt((req.query.skip as string) ?? "0");
+    const userList = await UserService.getAllUsers(take, skip);
+
+    res.send(APIResponse(null, userList));
+  } catch (err) {
+    next(err);
   }
-
-  res.status(201).send(APIResponse("user created", userResult));
 };
 
 const UserController = Object.freeze({
   addUser,
+  getAllUsers,
 });
 
 export default UserController;

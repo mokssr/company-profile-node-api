@@ -36,9 +36,25 @@ const findUniqueUser = async (username?: string, email?: string) => {
   return userResult;
 };
 
+const getAllUsers = async (take: number = 10, skip: number = 0) => {
+  const userResult = await db.user.findMany({
+    take: take,
+    skip: skip,
+  });
+
+  return userResult;
+};
+
+const findUserById = async (userId: number) => {
+  const userResult = await db.user.findFirstOrThrow({ where: { id: userId } });
+  return userResult;
+};
+
 const UserRepository = Object.freeze({
   addUser,
+  getAllUsers,
   findUniqueUser,
+  findUserById,
 });
 
 export default UserRepository;
