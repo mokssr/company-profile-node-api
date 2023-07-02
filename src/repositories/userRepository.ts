@@ -27,7 +27,7 @@ const findUniqueUser = async (username?: string, email?: string) => {
     orClause.push({ email: email });
   }
 
-  const userResult = await db.user.findFirstOrThrow({
+  const userResult = await db.user.findFirst({
     where: {
       OR: orClause,
     },
@@ -46,7 +46,7 @@ const getAllUsers = async (take: number = 10, skip: number = 0) => {
 };
 
 const findUserById = async (userId: number) => {
-  const userResult = await db.user.findFirstOrThrow({ where: { id: userId } });
+  const userResult = await db.user.findFirst({ where: { id: userId } });
   return userResult;
 };
 

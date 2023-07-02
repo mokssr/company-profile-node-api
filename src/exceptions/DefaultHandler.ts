@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { APIResponse } from "../utils/ResponseFormatter.js";
+import { APIResponse } from "../utils/formatter.js";
 import BadRequest from "./BadRequest.js";
 
 const GlobalErrorHandler = (

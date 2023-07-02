@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import UserService from "../services/userService";
 import { validateSignUp } from "../validations/userValidation";
-import { APIResponse } from "../utils/ResponseFormatter";
+import { APIResponse } from "../utils/formatter";
 import BadRequest from "../exceptions/BadRequest";
 
 const addUser = (req: Request, res: Response, next: NextFunction) => {

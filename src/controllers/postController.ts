@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { APIResponse } from "../utils/ResponseFormatter";
+import { APIResponse } from "../utils/formatter";
 import PostService from "../services/postService";
 import { validateCreatePost } from "../validations/postValidation";
 
